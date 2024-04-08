@@ -146,16 +146,7 @@ function app(){
 
 document.body.prepend(app())
 
-document.addEventListener('keydown', (e)=>{
-    if(e.key == 'enter' && e.target.hasAttribute('tabindex')){
-        e.preventDefault()
-        e.target.click()
-    }
-})
 
-
-
-// render()
 
 // function save(){
 // //     const save = JSON.stringify(todo)

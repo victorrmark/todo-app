@@ -22,11 +22,11 @@ function app(){
     function createTodo(item){
         let todos, todoItem, input, box, edit
 
-        todos = (todoItem = mk('div', {className: 'todo-items'}, [
+        todos = (ui.todoItem = mk('div', {className: 'todo-items'}, [
             (box = mk('input', {type: 'checkbox', onkeypress: enter, onchange: checkBox, tabindex: "0"})),
             (input = mk('input', {type: 'text', oninput: change, onblur: blur, onkeydown: keyDown})),
             mk('div', {className: 'actions'}, [
-                (edit = mk('button', {className: 'material-symbols-outlined edit', onclick: editTodo, tabindex: "0"}, ['Edit'])),
+                (ui.edit = mk('button', {className: 'material-symbols-outlined edit', onclick: editTodo, tabindex: "0"}, ['Edit'])),
                 mk('button', {className: 'material-symbols-outlined remove', onclick: remove, tabindex: "0" }, ['Delete'])
             ])
         ]))
@@ -64,11 +64,11 @@ function app(){
             item.complete = box.checked
 
             if(item.complete){
-                todoItem.classList.toggle('complete');
-                edit.disabled = true
+                ui.todoItem.classList.toggle('complete');
+                ui.edit.disabled = true
             }else if(!item.complete){
-                todoItem.classList.remove('complete');
-                edit.disabled = false
+                ui.todoItem.classList.remove('complete');
+                ui.edit.disabled = false
             }
             
             save()
@@ -87,8 +87,11 @@ function app(){
         }
 
         function remove(){
-            todo = todo.filter(t => t.id != item.id)
-            if(confirm('Do you want to remove this task')) todos.remove()
+            
+            if(confirm('Do you want to remove this task')){
+                todo = todo.filter(t => t.id != item.id)
+                todos.remove()
+            }
 
             save()
         }
@@ -111,12 +114,16 @@ function app(){
                 const { todos } = createTodo(item);
                 ui.body.prepend(todos);
 
-                console.log(item.complete)
-
+                if(item.complete){
+                ui.todoItem.classList.toggle('complete');
+                ui.edit.disabled = true
+                }else if(!item.complete){
+                    ui.todoItem.classList.remove('complete');
+                    ui.edit.disabled = false
+                }
             });
         }
 
-        
     }
 
     // Load data when the app starts
@@ -131,6 +138,7 @@ function app(){
         }
 
         todo.push(item)
+        console.log(todo)
 
         const {todos, input, box} = createTodo(item);
 
@@ -147,35 +155,4 @@ function app(){
 document.body.prepend(app())
 
 
-
-// function save(){
-// //     const save = JSON.stringify(todo)
-    // localStorage.setItem('myTodo', ui.body.innerHTML)
-
-// //     localStorage.setItem('myTodo', save)
-// }
-
-// function load(){
-//     const data = localStorage.getItem('myTodo')
-
-//     if(data) todo = JSON.parse(data)
-   
-// }
-
-// function render(){
-// //     load()
-//     ui.body.innerHTML = localStorage.getItem('myTodo')
-
-// //     for(let i = 0; i < todo.length; i++){
-// //         const item = todo[i]
-
-// //         const {createTodo} = app()
-// //         const {todos} = createTodo(item)
-
-// //         ui.body.prepend(todos)
-        
-// //     }
-// }
-
-// render()
 
